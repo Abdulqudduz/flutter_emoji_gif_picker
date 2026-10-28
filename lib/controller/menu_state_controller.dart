@@ -1,9 +1,10 @@
+import 'dart:io';
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_emoji_gif_picker/controller/keyboard_controller.dart';
 import 'package:get/get.dart';
-import 'package:platform_info/platform_info.dart';
 
 import '../giphy/models/gif.dart';
 import '/controller/mobile_search_bar_controller.dart';
@@ -29,7 +30,7 @@ class MenuProperties {
     if (textEditingController != null) {
       focusNode = FocusNode();
       this.onEmojiSelected = (category, emoji) {
-        if (Platform.I.isDesktop) {
+        if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
           Get.find<MenuStateController>().close();
         }
         if (onEmojiSelected != null) {
@@ -37,7 +38,7 @@ class MenuProperties {
         }
       };
       this.onGifSelected = (gif) {
-        if (Platform.I.isDesktop) {
+        if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
           Get.find<MenuStateController>().close();
         }
         if (onGifSelected != null) {

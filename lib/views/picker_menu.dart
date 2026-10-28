@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_info/platform_info.dart';
 
 import '../giphy/models/gif.dart';
 import '/models/menu_design.dart';
@@ -39,7 +40,7 @@ class PickerMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Platform.I.isMobile
+    return (Platform.isAndroid || Platform.isIOS)
         ? PickerMenuMobile(
             colors: colors,
             styles: styles,

@@ -1,5 +1,6 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:platform_info/platform_info.dart';
 
 class MenuColors {
   late Color backgroundColor,
@@ -38,7 +39,7 @@ class MenuColors {
     this.indicatorColor = indicatorColor ?? Colors.transparent;
   }
   MenuColors.dark() {
-    if (Platform.I.isDesktop) {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
       backgroundColor = const Color(0xFF262626);
       searchBarBackgroundColor = const Color(0xFF202020);
       searchBarBorderColor = const Color(0xFF343434);
@@ -61,7 +62,7 @@ class MenuColors {
     }
   }
   MenuColors.light() {
-    if (Platform.I.isDesktop) {
+    if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
       backgroundColor = const Color(0xFFf6f5f3);
       searchBarBackgroundColor = Colors.white;
       searchBarBorderColor = const Color(0xFFe6e5e2);

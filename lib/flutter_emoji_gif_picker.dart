@@ -1,9 +1,10 @@
 library flutter_emoji_gif_picker;
 
+import 'dart:io';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_emoji_gif_picker/controller/keyboard_controller.dart';
 import 'package:get/get.dart';
-import 'package:platform_info/platform_info.dart';
 
 import '/models/menu_design.dart';
 import 'controller/menu_state_controller.dart';
@@ -28,6 +29,10 @@ class EmojiGifPickerPanel {
   ///
   /// You can close, open menu or get status of menu.
 
+  static bool get _isMobilePlatform {
+    return Platform.isAndroid || Platform.isIOS;
+  }
+
   static void setup({
     MenuSizes? sizes,
     MenuTexts? texts,
@@ -41,7 +46,7 @@ class EmojiGifPickerPanel {
     if (sizes != null) {
       controller.menuSizes = sizes;
     } else {
-      if (Platform.I.isMobile) {
+      if (_isMobilePlatform) {
         controller.menuSizes = MenuSizes(width: 2000, height: 300);
       } else {
         controller.menuSizes = MenuSizes(width: 460, height: 400);
@@ -128,9 +133,9 @@ class EmojiGifPickerPanel {
       bool viewGif = true,
       bool viewEmoji = true,
       required String id}) {
-    openFromStack ??= Platform.I.isMobile ? false : true;
+    openFromStack ??= _isMobilePlatform ? false : true;
     var controller = Get.find<MenuStateController>();
-    if (Platform.I.isMobile) {
+    if (_isMobilePlatform) {
       controller.menuPosition = MenuPosition(bottom: 0);
     } else if (position != null) {
       controller.menuPosition = position;

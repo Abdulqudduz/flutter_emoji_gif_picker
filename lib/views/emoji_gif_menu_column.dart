@@ -1,10 +1,11 @@
+import 'dart:io';
+
 import '../controller/keyboard_controller.dart';
 import '/controller/menu_state_controller.dart';
 import '/views/picker_menu.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:platform_info/platform_info.dart';
 import '../models/menu_design.dart';
 
 class EmojiGifMenuColumn extends StatelessWidget {
@@ -38,7 +39,7 @@ class EmojiGifMenuColumn extends StatelessWidget {
   MenuSizes setSizes(MenuStateController controller) {
     var keyboardController = Get.find<KeyboardController>();
     MenuSizes sizes;
-    if (Platform.I.isMobile && keyboardController.isOpen) {
+    if ((Platform.isAndroid || Platform.isIOS) && keyboardController.isOpen) {
       sizes = MenuSizes(width: controller.menuSizes.width, height: 150);
     } else {
       sizes = controller.menuSizes;

@@ -1,12 +1,14 @@
-import 'package:flutter_emoji_gif_picker/controller/keyboard_controller.dart';
-import '/controller/menu_state_controller.dart';
-import '/views/picker_menu.dart';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_emoji_gif_picker/controller/keyboard_controller.dart';
 import 'package:flutter_keyboard_size/flutter_keyboard_size.dart';
 import 'package:get/get.dart';
-import 'package:platform_info/platform_info.dart';
+
+import '../controller/menu_state_controller.dart';
 import '../models/menu_design.dart';
+import 'picker_menu.dart';
 
 class EmojiGifMenuStack extends StatelessWidget {
   /// EmojiGifMenuStack should be put inside the Stack structure
@@ -50,7 +52,7 @@ class EmojiGifMenuStack extends StatelessWidget {
                         builder: ((controller) {
                       return controller.isOpened &&
                               controller.currentMenu!.fromStack == true
-                          ? Platform.I.isMobile
+                          ? (Platform.isAndroid || Platform.isIOS)
                               ? viewMobile(controller)
                               : Positioned(
                                   bottom: controller.menuPosition.bottom,

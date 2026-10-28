@@ -335,4 +335,3 @@ EmojiGifPickerPanel.setTexts(MenuTexts(
 - The [flutter_keyboard_size](https://pub.dev/packages/flutter_keyboard_size) package
 - The [giphy_api_client](https://pub.dev/packages/giphy_api_client) package
 - The [get](https://pub.dev/packages/get) package
-- The [platform_info](https://pub.dev/packages/platform_info) package

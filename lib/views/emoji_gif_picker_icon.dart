@@ -1,9 +1,9 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:platform_info/platform_info.dart';
 
 import '../flutter_emoji_gif_picker.dart';
 import '../giphy/models/gif.dart';
@@ -37,7 +37,7 @@ class EmojiGifPickerIcon extends StatefulWidget {
       required this.icon,
       Color? hoveredBackgroundColor,
       Color? backgroundColor})
-      : fromStack = fromStack ?? (Platform.I.isMobile ? false : true),
+      : fromStack = fromStack ?? ((Platform.isAndroid || Platform.isIOS) ? false : true),
         hoveredBackgroundColor = hoveredBackgroundColor ??
             Get.find<MenuStateController>()
                 .menuColors
@@ -63,7 +63,7 @@ class _EmojiGifPickerIconState extends State<EmojiGifPickerIcon> {
     return GetBuilder<MenuStateController>(builder: (controller) {
       return TextButton(
           onPressed: () {
-            if (Platform.I.isDesktop) {
+            if (Platform.isWindows || Platform.isMacOS || Platform.isLinux) {
               setPosition(context);
             } else {
               Get.find<MenuStateController>().menuSizes.width =
@@ -93,7 +93,7 @@ class _EmojiGifPickerIconState extends State<EmojiGifPickerIcon> {
                 borderRadius: BorderRadius.circular(10)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Platform.I.isMobile &&
+              child: (Platform.isAndroid || Platform.isIOS) &&
                       EmojiGifPickerPanel.isMenuOpened(widget.id)
                   ? widget.keyboardIcon
                   : widget.icon,

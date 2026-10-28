@@ -1,10 +1,12 @@
-import '/controller/menu_state_controller.dart';
+import 'dart:io';
+import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:platform_info/platform_info.dart';
-import 'dart:ui' as ui show BoxHeightStyle, BoxWidthStyle;
+
+import '/controller/menu_state_controller.dart';
 
 import 'emoji_gif_picker_builder.dart';
 
@@ -159,7 +161,7 @@ class EmojiGifTextField extends StatelessWidget {
         builder: (isMenuOpened) {
           //ToolbarOptions? toolbarOptions;
           bool? enableInteractiveSelection;
-          bool readOnly = Platform.I.isMobile ? isMenuOpened : false;
+          bool readOnly = (Platform.isAndroid || Platform.isIOS) ? isMenuOpened : false;
           bool? showCursor = isMenuOpened ? true : null;
           TextEditingController? controller =
               Get.find<MenuStateController>().isValidMenu(id)

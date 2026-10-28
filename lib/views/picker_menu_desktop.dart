@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:platform_info/platform_info.dart';
 
 import '../giphy/client.dart';
 import '../giphy/models/collection.dart';
@@ -240,7 +241,7 @@ class _PickerMenuState extends State<PickerMenuDesktop> {
                   ),
                 ),
               ),
-              if (Platform.I.isDesktop)
+              if (Platform.isWindows || Platform.isMacOS || Platform.isLinux)
                 const SizedBox(
                   height: 10,
                 ),
@@ -259,21 +260,27 @@ class _PickerMenuState extends State<PickerMenuDesktop> {
   Widget emojiPicker() {
     return EmojiPicker(
       textEditingController: widget.textEditingController,
-      onEmojiSelected: (var category, var emoji) {
+      onEmojiSelected: (category, emoji) {
         if (widget.onEmojiSelected != null) {
           widget.onEmojiSelected!(category, emoji);
         }
       },
       customWidget: searchController.text == ""
           ? null
-          : (config, state) {
+          : (config, state, showSearchBar) {
               return GridView.builder(
                 padding: EdgeInsets.zero,
                 itemCount: filterEmojiEntities.length,
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 7,
-                    crossAxisSpacing: Platform.I.isDesktop ? 5 : 2,
-                    mainAxisSpacing: Platform.I.isDesktop ? 5 : 2),
+                    crossAxisSpacing:
+                        (Platform.isWindows || Platform.isMacOS || Platform.isLinux)
+                            ? 5
+                            : 2,
+                    mainAxisSpacing:
+                        (Platform.isWindows || Platform.isMacOS || Platform.isLinux)
+                            ? 5
+                            : 2),
                 itemBuilder: (context, index) {
                   return TextButton(
                     style: TextButton.styleFrom(
@@ -298,38 +305,48 @@ class _PickerMenuState extends State<PickerMenuDesktop> {
                     child: Text(
                       filterEmojiEntities[index].emoji,
                       style: TextStyle(
-                          fontSize: 32 * (Platform.I.isIOS ? 1.30 : 1.0)),
+                          fontSize: 32 * (Platform.isIOS ? 1.30 : 1.0)),
                     ),
                   );
                 },
               );
             },
       config: Config(
-        columns: 7,
-        emojiSizeMax: 32 * (Platform.I.isIOS ? 1.30 : 1.0),
-        verticalSpacing: 0,
-        horizontalSpacing: 0,
-        gridPadding: EdgeInsets.zero,
-        initCategory: Category.RECENT,
-        bgColor: widget.colors.backgroundColor,
-        indicatorColor: widget.colors.indicatorColor,
-        iconColor: Colors.grey,
-        iconColorSelected: widget.colors.menuSelectedIconColor,
-        backspaceColor: widget.colors.backgroundColor,
-        skinToneDialogBgColor: Colors.white,
-        skinToneIndicatorColor: Colors.grey,
-        enableSkinTones: true,
-        recentsLimit: 28,
-        noRecents: widget.texts.noRecents ??
-            const Text(
-              "No Recents",
-              style: TextStyle(fontSize: 20, color: Colors.grey),
-              textAlign: TextAlign.center,
-            ), // Needs to be const Widget
-        loadingIndicator: const SizedBox.shrink(), // Needs to be const Widget
-        tabIndicatorAnimDuration: kTabScrollDuration,
-        categoryIcons: const CategoryIcons(),
-        buttonMode: ButtonMode.MATERIAL,
+        emojiViewConfig: EmojiViewConfig(
+          columns: 7,
+          emojiSizeMax: 32 * (Platform.isIOS ? 1.30 : 1.0),
+          verticalSpacing: 0,
+          horizontalSpacing: 0,
+          gridPadding: EdgeInsets.zero,
+          backgroundColor: widget.colors.backgroundColor,
+          recentsLimit: 28,
+          buttonMode: ButtonMode.MATERIAL,
+          loadingIndicator: const SizedBox.shrink(),
+          noRecents: widget.texts.noRecents ??
+              const Text(
+                "No Recents",
+                style: TextStyle(fontSize: 20, color: Colors.grey),
+                textAlign: TextAlign.center,
+              ),
+        ),
+        categoryViewConfig: CategoryViewConfig(
+          initCategory: Category.RECENT,
+          backgroundColor: widget.colors.backgroundColor,
+          indicatorColor: widget.colors.indicatorColor,
+          iconColor: Colors.grey,
+          iconColorSelected: widget.colors.menuSelectedIconColor,
+          backspaceColor: widget.colors.backgroundColor,
+          tabIndicatorAnimDuration: kTabScrollDuration,
+          categoryIcons: const CategoryIcons(),
+        ),
+        skinToneConfig: const SkinToneConfig(
+          enabled: true,
+          dialogBackgroundColor: Colors.white,
+          indicatorColor: Colors.grey,
+        ),
+        bottomActionBarConfig: const BottomActionBarConfig(
+          enabled: false,
+        ),
       ),
     );
   }
